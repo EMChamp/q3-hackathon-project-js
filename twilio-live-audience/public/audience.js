@@ -41,10 +41,13 @@ const watchStream = async () => {
 
 
         // Twilio Sync
-        var syncClient = new Twilio.Sync.Client(data.token);
+        var syncClientJapanese = new Twilio.Sync.Client(data.token);
+        var syncClientChinese = new Twilio.Sync.Client(data.token);
+        var syncClientFrench = new Twilio.Sync.Client(data.token);
+        var syncClientSpanish = new Twilio.Sync.Client(data.token);
 
         // Change the subtitles based on the language selected
-        syncClient.stream(`${roomSid}_ja-JP`)
+        syncClientJapanese.stream(`${roomSid}_ja-JP`)
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {
@@ -56,7 +59,7 @@ const watchStream = async () => {
             .catch((error) => {
                 console.error('Unexpected error', error);
             });
-        syncClient.stream(`${roomSid}_zh-CN`)
+        syncClientChinese.stream(`${roomSid}_zh-CN`)
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {
@@ -68,7 +71,7 @@ const watchStream = async () => {
             .catch((error) => {
                 console.error('Unexpected error', error);
             });
-        syncClient.stream(`${roomSid}_es-ES`)
+        syncClientFrench.stream(`${roomSid}_es-ES`)
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {
@@ -80,7 +83,7 @@ const watchStream = async () => {
             .catch((error) => {
                 console.error('Unexpected error', error);
             });
-        syncClient.stream(`${roomSid}_fr-FR`)
+        syncClientSpanish.stream(`${roomSid}_fr-FR`)
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {

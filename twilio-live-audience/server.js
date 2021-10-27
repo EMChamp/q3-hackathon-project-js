@@ -50,6 +50,7 @@ app.get('/watch', (req, res) => {
  */
 app.post('/audienceToken', async (req, res) => {
     console.log("audience token");
+    console.log(req.body.playerStreamer)
     // Generate a random string for the identity
     const identity = crypto.randomBytes(20).toString('hex');
 
@@ -64,7 +65,7 @@ app.post('/audienceToken', async (req, res) => {
         const token = new AccessToken(accountSid, apiKey, apiKeySecret);
 
         // Create a playback grant and attach it to the access token
-        const playerStreamerSid = 'VJf61680c54132a07728ace63e18f4be03';
+        const playerStreamerSid = req.body.playerStreamer;
         const playbackGrant = await twilioClient.media.playerStreamer(playerStreamerSid).playbackGrant().create({ttl: 60});
 
         const wrappedPlaybackGrant = new PlaybackGrant({

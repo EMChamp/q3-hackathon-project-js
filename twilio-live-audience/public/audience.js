@@ -4,6 +4,7 @@ const startEndButton = document.getElementById('streamStartEnd');
 let player;
 let watchingStream = false;
 let roomSid = getRoomSidfromQueryString();
+let playerStreamer = getPlayerStreamerSidQueryString();
 
 const watchStream = async () => {
     try {
@@ -11,7 +12,8 @@ const watchStream = async () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify({playerStreamer:playerStreamer}) // body data type must match "Content-Type" header
         });
 
         const data = await response.json();
@@ -35,9 +37,10 @@ const watchStream = async () => {
         var syncClient = new Twilio.Sync.Client(data.token);
 
         // Open a Document by unique name and update its data
-        syncClient.stream(`${roomSid}-_ja-JP`)
+        syncClient.stream(`${roomSid}_ja-JP`)
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
+                console.log('Successfully opened a message stream. UniqueName:', stream.uniqueName);
                 stream.on('messagePublished', (event) => {
                     console.log('Received a "messagePublished" event:', event);
                 });
@@ -65,11 +68,25 @@ const leaveStream = () => {
 function getRoomSidfromQueryString(){
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());  
-    if(params && params["sid"]) {
-        console.log(params["sid"])
-        return params["sid"];
+    if(params && params["roomSid"]) {
+        console.log(params["roomSid"])
+        return params["roomSid"];
     }else{
-        console.log(new Error("missing query string parameter `sid`."))
+        console.log(new Error("missing query string parameter `roomSid`."))
     }
 
 }
+
+
+function getPlayerStreamerSidQueryString(){
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());  
+    if(params && params["playerStreamerSid"]) {
+        console.log(params["playerStreamerSid"])
+        return params["playerStreamerSid"];
+    }else{
+        console.log(new Error("missing query string parameter `playerStreamerSid`."))
+    }
+
+}
+

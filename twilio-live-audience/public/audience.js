@@ -7,7 +7,7 @@ let roomSid = getRoomSidfromQueryString();
 let playerStreamer = getPlayerStreamerSidQueryString();
 
 
-const languageSelect = async () => {
+function languageSelect() {
     // Get Language
     var select = document.getElementById('language-select');
     var language = select.options[select.selectedIndex].value;
@@ -15,6 +15,7 @@ const languageSelect = async () => {
     console.log("language = " + language);
     return language;
 }
+
 const watchStream = async () => {
     try {
         const response = await fetch('/audienceToken', {
@@ -53,7 +54,7 @@ const watchStream = async () => {
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {
-                    if (languageSelect() == "Japanese") {
+                    if (languageSelect() === "Japanese") {
                         document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
                     }
                 });
@@ -65,7 +66,7 @@ const watchStream = async () => {
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {
-                    if (languageSelect() == "Chinese") {
+                    if (languageSelect() === "Chinese") {
                         document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
                     }
                 });
@@ -77,7 +78,7 @@ const watchStream = async () => {
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {
-                    if (languageSelect() == "Spanish") {
+                    if (languageSelect() === "Spanish") {
                         document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
                     }
                 });
@@ -90,7 +91,7 @@ const watchStream = async () => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 console.log('Successfully opened a message stream. UniqueName:', stream.uniqueName);
                 stream.on('messagePublished', (event) => {
-                    if (languageSelect() == "French") {
+                    if (languageSelect() === "French") {
                         document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
                     }
                 });

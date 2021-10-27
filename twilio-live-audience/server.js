@@ -13,7 +13,8 @@ const app = express();
 const port = 5000;
 
 const AccessToken = twilio.jwt.AccessToken;
-const VideoGrant = AccessToken.VideoGrant;
+// const VideoGrant = AccessToken.VideoGrant;
+const SyncGrant = AccessToken.SyncGrant;
 const PlaybackGrant = AccessToken.PlaybackGrant;
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -63,7 +64,7 @@ app.post('/audienceToken', async (req, res) => {
         const token = new AccessToken(accountSid, apiKey, apiKeySecret);
 
         // Create a playback grant and attach it to the access token
-        const playerStreamerSid = 'VJ2165c2e8af9c528d7c4908bcf9f8f695';
+        const playerStreamerSid = 'VJf61680c54132a07728ace63e18f4be03';
         const playbackGrant = await twilioClient.media.playerStreamer(playerStreamerSid).playbackGrant().create({ttl: 60});
 
         const wrappedPlaybackGrant = new PlaybackGrant({
@@ -72,6 +73,15 @@ app.post('/audienceToken', async (req, res) => {
 
         token.addGrant(wrappedPlaybackGrant);
         token.identity = identity;
+
+        // TODO: moved serviceSid to .config file.
+        //// Twilio Sync              
+        const syncGrant = new SyncGrant({
+            serviceSid: "IS74f478376e2bd19c3bfef5441d89e244"
+        });
+        token.addGrant(syncGrant);
+
+
 
         // Serialize the token to a JWT and return it to the client side
         return res.send({

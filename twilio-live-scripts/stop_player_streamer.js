@@ -9,7 +9,7 @@ const client = require('twilio')(accountSid, authToken);
 console.log("Stop Player Streamer");
 
 try {
-    client.media.playerStreamer('VJ31252a97283ceac5f08697738a728a5b')
+    client.media.playerStreamer('VJ1eed36d2895ae111dc0796a7123126b0')
         .update({status: 'ended'})
         .then(player_streamer => console.log(player_streamer.dateCreated));
 } catch (e) {

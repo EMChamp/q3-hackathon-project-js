@@ -5,6 +5,15 @@ let player;
 let watchingStream = false;
 let roomSid = getRoomSidfromQueryString();
 
+
+const languageSelect = async () => {
+    // Get Language
+    var select = document.getElementById('language-select');
+    var language = select.options[select.selectedIndex].value;
+
+    console.log("language = " + language);
+    return language;
+}
 const watchStream = async () => {
     try {
         const response = await fetch('/audienceToken', {
@@ -34,12 +43,50 @@ const watchStream = async () => {
         // Twilio Sync
         var syncClient = new Twilio.Sync.Client(data.token);
 
-        // Open a Document by unique name and update its data
-        syncClient.stream(`${roomSid}-_ja-JP`)
+        // Change the subtitles based on the language selected
+        syncClient.stream(`${roomSid}_ja-JP`)
             .then((stream) => {
                 console.log('Successfully opened a message stream. SID:', stream.sid);
                 stream.on('messagePublished', (event) => {
-                    console.log('Received a "messagePublished" event:', event);
+                    if (languageSelect() == "Japanese") {
+                        document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Unexpected error', error);
+            });
+        syncClient.stream(`${roomSid}_zh-CN`)
+            .then((stream) => {
+                console.log('Successfully opened a message stream. SID:', stream.sid);
+                stream.on('messagePublished', (event) => {
+                    if (languageSelect() == "Chinese") {
+                        document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Unexpected error', error);
+            });
+        syncClient.stream(`${roomSid}_es-ES`)
+            .then((stream) => {
+                console.log('Successfully opened a message stream. SID:', stream.sid);
+                stream.on('messagePublished', (event) => {
+                    if (languageSelect() == "Spanish") {
+                        document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error('Unexpected error', error);
+            });
+        syncClient.stream(`${roomSid}_fr-FR`)
+            .then((stream) => {
+                console.log('Successfully opened a message stream. SID:', stream.sid);
+                stream.on('messagePublished', (event) => {
+                    if (languageSelect() == "French") {
+                        document.getElementById("transcription-container").innerHTML = event.message.data['translation'];
+                    }
                 });
             })
             .catch((error) => {
@@ -61,6 +108,16 @@ const leaveStream = () => {
     startEndButton.classList.replace('hover:bg-red-500', 'hover:bg-green-700');
 }
 
+const watchOrLeaveStream = async (event) => {
+    event.preventDefault();
+    if (!watchingStream) {
+        await watchStream();
+    }
+    else {
+        leaveStream();
+    }
+};
+
 // sample url format: http://localhost:5000/watch?sid=RM00000
 function getRoomSidfromQueryString(){
     const urlSearchParams = new URLSearchParams(window.location.search);
@@ -73,3 +130,5 @@ function getRoomSidfromQueryString(){
     }
 
 }
+
+startEndButton.addEventListener('click', watchOrLeaveStream);

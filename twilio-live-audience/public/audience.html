@@ -16,7 +16,22 @@
         <!-- livestream will appear here -->
     </div>
 
-    <button class='bg-green-500 hover:bg-green-700 text-white font-bold mt-10 py-2 px-6 mr-2 rounded' id='streamStartEnd' onclick="watchStream()">
+    <div> <p id="transcription-container" class="justify-center items-center text-center" style="font-size:50px;font-family:verdana;"></p>
+        <script>document.getElementById("transcription-container").innerHTML = ""
+        </script>
+    </div>
+
+    <div>
+        <label for="language-select">Choose a language:</label>
+
+        <select name="language" id="language-select">
+            <option value="Japanese">Japanese</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Spanish">Spanish</option>
+            <option value="French">French</option>
+        </select>
+    </div>
+    <button class='bg-green-500 hover:bg-green-700 text-white font-bold mt-10 py-2 px-6 mr-2 rounded' id='streamStartEnd'>
         watch stream
     </button>
 

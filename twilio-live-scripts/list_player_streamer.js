@@ -6,7 +6,17 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
+console.log("Rooms Created");
 
+try {
+    client.media.playerStreamer
+        .list({status: "created", limit: 20})
+        .then(playerStreamer => playerStreamer.forEach(p => console.log(p.sid)));
+} catch (e) {
+    console.log("Error Occured");
+    console.log(e.toString());
+}
+console.log("Rooms Started");
 try {
     client.media.playerStreamer
         .list({status: "started", limit: 20})
@@ -15,5 +25,6 @@ try {
     console.log("Error Occured");
     console.log(e.toString());
 }
+
 console.log("Successful Run");
 

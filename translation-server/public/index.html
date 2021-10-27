@@ -1,0 +1,21 @@
+<html><head>
+    <script type="text/javascript" src="http://media.twiliocdn.com/sdk/js/sync/v3.0/twilio-sync.min.js"></script>
+
+<script>
+
+var syncClient = new Twilio.Sync.Client("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTS2NkYjZhMTFjZDJjOWJhNjY0Y2MwMjA1Y2JiOWQ5M2I5LTE2MzUyMzYxNDEiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJvbmx5IGZvciB0ZXN0aW5nIiwiZGF0YV9zeW5jIjp7InNlcnZpY2Vfc2lkIjoiSVM3NGY0NzgzNzZlMmJkMTljM2JmZWY1NDQxZDg5ZTI0NCJ9fSwiaWF0IjoxNjM1MjM2MTQxLCJleHAiOjE2MzUyMzk3NDEsImlzcyI6IlNLY2RiNmExMWNkMmM5YmE2NjRjYzAyMDVjYmI5ZDkzYjkiLCJzdWIiOiJBQzFlMGQyZTA4NWVkM2YyOTU5YzRmZmM3NmU3ZmM4ZWI5In0.ZZef4AJu0ggISlq7HhiwbwfRqqTVjTuA6Lp-yRd8i-U");
+
+syncClient.stream('TO48bc2f404466457c8f11ff6bdc887aa4')
+  .then((stream) => {
+    console.log('Successfully opened a message stream. SID:', stream.sid);
+    stream.on('messagePublished', (event) => {
+      console.log('Received a "messagePublished" event:', event);
+    });
+  })
+  .catch((error) => {
+    console.error('Unexpected error', error);
+  });
+</script>
+</head><body></body>
+
+</html>
